@@ -1,5 +1,4 @@
 import { Product } from "../models/product.model.js";
-import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/apiError.js";
 import { asyncHandler } from "../utils/apiHandler.js";
 import { ApiResponse } from "../utils/apiResponse.js";
