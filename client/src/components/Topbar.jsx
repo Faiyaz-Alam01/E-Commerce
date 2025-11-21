@@ -17,9 +17,9 @@ const Topbar = () => {
 				</div>
 				<div className='flex gap-3 font-medium text-md'>
 					<Link to ={'/'} className='hover:text-blue-800'>Home</Link>
-					<Link className='hover:text-blue-800'>Products</Link>
-					<Link className='hover:text-blue-800'>Contact</Link>
-					<Link className='hover:text-blue-800'>Dashboard</Link>
+					<Link to={'/products'} className='hover:text-blue-800'>Products</Link>
+					<Link to={'/contact'} className='hover:text-blue-800'>Contact</Link>
+					<Link to={'dashboard'} className='hover:text-blue-800'>Dashboard</Link>
 					{/* <Link>Cart</Link>
 					<Link>whishlist</Link> */}
 				</div>
@@ -32,7 +32,7 @@ const Topbar = () => {
 					</div>
 
 					<div>
-						<Link to={'/'} className='hover:text-blue-800 font-medium'>SignUp</Link>
+						<Link to={'/signup'} className='hover:text-blue-800 font-medium'>SignUp</Link>
 					</div>
 				</div>
 
