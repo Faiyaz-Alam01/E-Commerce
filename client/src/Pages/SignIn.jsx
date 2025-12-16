@@ -21,10 +21,10 @@ const SignIn = () => {
 
 
 	return (
-		<div className='flex justify-center items-center h-100'>
+		<div className='flex justify-center items-center h-screen'>
 			<form className='border p-8 space-y-2'>
 				<div className='flex flex-col'>
-					<label htmlFor="email">Email</label>
+					<label htmlFor="email" className='font-medium'>Email</label>
 					<input 
 						type="text" 
 						name='email' 
@@ -36,7 +36,7 @@ const SignIn = () => {
 					/>
 				</div>
 				<div className='flex flex-col '>
-					<label htmlFor="password">Password</label>
+					<label htmlFor="password" className='font-medium'>Password</label>
 					<input 
 						type='password' 
 						name='password' 
