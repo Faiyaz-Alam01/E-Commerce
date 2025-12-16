@@ -2,6 +2,7 @@ import axiosInstance from '@/helper/axiousInstance'
 import React from 'react'
 
 const ProductCard = ({ product }) => {
+  console.log("Product in Card:", product);
 
   const addProducttoCart = async() => {
     try {
