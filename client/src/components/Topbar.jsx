@@ -9,17 +9,15 @@ import { userLogout } from '@/redux/slices/authSlice';
 
 const Topbar = () => {
 
-	const {data} = useSelector(state => state.user)
-	const {isLoggedIn} = useSelector(state => state.user);
-
+	const {data, isLoggedIn} = useSelector(state => state.auth);
+	const userInfo = data?.user;
+	
 	const naviagate = useNavigate();
 	const dispatch = useDispatch();
 
-	const handleLogout = () => {
-		const response = dispatch(userLogout());
-		if(response?.payload?.success){
-			naviagate('/signin');
-		}
+	const handleLogout = async () => {
+		await dispatch(userLogout());
+		naviagate('/signin');
 	}
 	return (
 		<div>
@@ -41,7 +39,7 @@ const Topbar = () => {
 				</div>
 				{isLoggedIn &&
 					<div className="flex items-center gap-4">
-						<div className="cursor-pointer relative" onClick={() => naviagate('/whishlist')}>
+						<div className="cursor-pointer relative" onClick={() => naviagate('/wishlist')}>
 							<IoCartOutline size={24} />
 							<span className="absolute -top-1 -right-2 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
 							0
@@ -51,7 +49,7 @@ const Topbar = () => {
 						<img 
 							onClick={() => naviagate('/profile')}
 							className='border size-9 rounded-full cursor-pointer'
-							src={data?.avatar || userPng} alt="logo" 
+							src={userInfo?.avatar || userPng} alt="logo" 
 						/>
 						
 						<button 
