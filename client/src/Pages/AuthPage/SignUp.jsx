@@ -117,13 +117,8 @@ const SignUp = () => {
 						
 					/>
 				</div>
-				<div className='flex justify-end mt-'>
-					<Link 
-						to={'/forgot'}
-						className='text-blue-600 hover:text-blue-700 text-shadow-amber-50 text-sm'
-					>forgot password?</Link>
-				</div>
-				<button type='submit' className='bg-blue-500 hover:bg-blue-600 font-medium w-full rounded-sm py-1 '>
+				
+				<button type='submit' className='bg-blue-500 mt-2 hover:bg-blue-600 text-white font-medium w-full rounded-sm py-1 '>
 					Submit
 				</button>
 				
