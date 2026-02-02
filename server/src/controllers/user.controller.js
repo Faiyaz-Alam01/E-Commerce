@@ -3,6 +3,8 @@ import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/apiError.js";
 import { asyncHandler } from "../utils/apiHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import jwt from "jsonwebtoken";
+import { sendEmail } from "../utils/sendEmail.js";
 
 const generateAccessAndRefreshTokens = async(userid) => {
 	try {
@@ -122,7 +124,7 @@ const loginUser = asyncHandler(async(req, res) => {
 		.json(new ApiResponse(
 			200,
 			{
-				user : loggedInUser, accessToken
+				user: loggedInUser
 			},
 			"User logged In successfully"
 		))
@@ -160,4 +162,181 @@ const logoutUser = asyncHandler(async(req, res) => {
 		))
 
 })
-export {registerUser, loginUser, logoutUser}
+
+const updateUser = asyncHandler(async(req, res) => {
+	const {bio,username, email} = req.body;
+	const id = req.params.id;
+	console.log("id", id);
+	
+		
+	const user = await User.findById(id);
+	if(!user){
+		throw new ApiError(404, "User not found");
+	}		
+	
+	
+	// const user = req.user._id;
+	// console.log(user);
+
+	// if(!user){
+	// 	throw new ApiError(404, "User not found");
+	// }
+
+	// if([username, email, password, bio].some((field) => field?.trim() === "")){
+	// 	throw new ApiError(400, "All fields are required");
+	// };
+
+	const avatarPath = req.file?.path;
+	
+	let avatarUrl
+	if(avatarPath){
+		const avatar = await uploadOnCloudinary(avatarPath);
+		avatarUrl = avatar.secure_url;
+		user.avatar = avatarUrl;
+	}
+
+
+	if(bio) user.bio =bio
+	if(username) user.username = username;
+	if(email) user.email = email;
+
+	await user.save();
+
+	return res
+		.status(200)
+		.json(new ApiResponse(
+			200,
+			{user},
+			"User updated successfully"
+		))
+
+})
+
+const forgotPassword = asyncHandler(async(req, res) => {
+	const { email } = req.body;	
+	console.log(email);
+	
+
+	const userExists = await User.findOne({ email });
+	if(!userExists){
+		throw new ApiError(404, 'Email not found');
+	}
+
+	const resetToken = await jwt.sign(
+		{userId : userExists._id},
+		process.env.JWT_SECRET, 
+		{expiresIn: "10m"}
+	);
+
+	const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+
+	await sendEmail({
+		to: userExists.email,
+		subject: "Password Reset Request",
+		html: `
+		<p>Dear User,</p>
+
+		<p>We received a request to reset the password associated with your account.</p>
+
+		<p>Please click the button below to securely reset your password:</p>
+
+		<p style="margin: 20px 0;">
+			<a 
+			href="${resetLink}" 
+			style="
+				background-color: #2563eb;
+				color: #ffffff;
+				padding: 10px 16px;
+				text-decoration: none;
+				border-radius: 4px;
+				font-weight: 600;
+				display: inline-block;
+			">
+			Reset Password
+			</a>
+		</p>
+
+		<p>If you did not request a password reset, please ignore this email. Your account will remain secure.</p>
+
+		<p>This password reset link will expire in <strong>15 minutes</strong> for security reasons.</p>
+
+		<p>Regards,<br/>
+		<strong>Support Team</strong></p>
+
+		<p style="font-size:12px;color:#6b7280;">
+			This is an automated email. Please do not reply.
+		</p>
+		`
+
+	});
+
+	return res
+		.status(200)
+		.json(new ApiResponse(
+			200,
+			{},
+			"Password reset link sent to your email"
+		));
+
+});
+
+const resetPassword =asyncHandler(async(req, res) => {
+	const{password,confirmPass} = req.body;
+	const {token} = req.params;
+
+	if(!password || !confirmPass){
+		throw new ApiError(400, "All fields are required");
+	}
+
+	if(password !== confirmPass){
+		throw new ApiError(400, "Passwords do not match");
+	}
+
+	const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+	if(!decoded){
+		throw new ApiError(400, "Invalid or expired token");
+	}
+
+	const user = await User.findById(decoded.userId);
+	if(!user){
+		throw new ApiError(404, "User not found");
+	}
+
+	user.password = password;
+	await user.save();
+
+	return res
+		.status(200)
+		.json(new ApiResponse(
+			200,
+			{},
+			"Password reset successfully"
+	));
+});
+
+const allUser = asyncHandler(async(req, res) => {
+	const user = await User.find();
+	return res
+		.status(200)
+		.json(new ApiResponse(
+			200,
+			user,
+			"All users fetched successfully"
+		));
+})
+
+const getUserById = asyncHandler(async(req, res) => {
+	const {userId} = req.params;
+	const user = await User.findById(userId).select("-password");
+	if(!user){
+		throw new ApiError(404, "User not found");
+	}
+	return res
+		.status(200)
+		.json(new ApiResponse(
+			200,
+			user,
+			"User fetched successfully"
+		));
+})
+export {registerUser, loginUser, logoutUser, updateUser, forgotPassword,resetPassword,allUser , getUserById};
