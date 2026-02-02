@@ -1,23 +1,24 @@
 import ProductCard from "@/Components/ProductCard";
-import axiosInstance from "@/helper/axiousInstance";
+import { useFetch } from "@/hooks/useFetch.js";
+import { getAllCategories } from "@/redux/slices/categoriesSlice";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 const Index = () => {
+	const dispatch = useDispatch();
 
-	const[products, setProducts] = useState([]);
+	const {data:productsData, loading, error} = useFetch("/products/All",{
+		credentials: "include",
+	});
+	// console.log("productsData:", productsData);
+	const products = productsData?.data || [];	
 	
-	async function getProducts () {
-		const response = await axiosInstance.get('/products/All');
-		if(!response.data.success){
-			console.error("Failed to fetch products")
+	useEffect(()=>{
+		const fetchCategory = async () => {
+			await dispatch(getAllCategories())
 		}
-		setProducts(response.data.data)
-	}
-
-
-	useEffect (() => {
-		getProducts();
-	},[])
+		fetchCategory();
+	},[dispatch])
 
 	return (
 		<div className="max-w-6xl mx-auto px-4 py-10">

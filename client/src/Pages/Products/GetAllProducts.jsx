@@ -31,7 +31,7 @@ export const GetAllProducts = () => {
 			<h1 className='text-center p-4'>All Products Page</h1>
 			<div className='flex gap-4 h-[80%] flex-col md:flex-row'>
 				{/* Here will be displayed all functionality */}
-				<div className='bg-gray-400 max-w-56 h-96 space-y-2 p-2'>
+				<div className='bg-gray-400 max-w-56 h-auto space-y-2 p-2 py-4'>
 					<input 
 						type="text"
 						placeholder='Search Products...'
@@ -84,7 +84,7 @@ export const GetAllProducts = () => {
 					</div>
 
 					<button 
-						className='text-center bg-blue-400 px-4 w-full font-medium text-xl hover:bg-blue-600 hover:text-white py-0.5 text rounded-lg'
+						className='text-center border bg-blue-500 text-sm px-4 w-full font-medium  py-1 hover:bg-blue-600 hover:text-white text rounded-lg'
 						type='submit'
 					>Reset Filters
 					</button>

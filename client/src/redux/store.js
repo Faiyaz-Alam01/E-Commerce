@@ -1,7 +1,7 @@
-import rootReducer from './reducers'
 import authReducer from "./slices/authSlice";
 import productReducer from "./slices/productSlice";
 import categorySlice from "./slices/categoriesSlice";
+import whishlistSlice from "./slices/wishlistSlice";
 import persistReducer from 'redux-persist/es/persistReducer';
 import persistStore from 'redux-persist/es/persistStore';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
@@ -11,6 +11,7 @@ const rootReducer = combineReducers({
     auth: authReducer,
     product: productReducer,
     category: categorySlice,
+    wishlist:whishlistSlice,
 });
 
 const persistConfig = {

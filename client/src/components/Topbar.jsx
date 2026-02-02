@@ -11,6 +11,10 @@ const Topbar = () => {
 
 	const {data, isLoggedIn} = useSelector(state => state.auth);
 	const userInfo = data?.user;
+
+	const {wishlistData} = useSelector((state) => state.wishlist);
+	  
+	const lengths = wishlistData?.products?.length || 0;
 	
 	const naviagate = useNavigate();
 	const dispatch = useDispatch();
@@ -42,7 +46,7 @@ const Topbar = () => {
 						<div className="cursor-pointer relative" onClick={() => naviagate('/wishlist')}>
 							<IoCartOutline size={24} />
 							<span className="absolute -top-1 -right-2 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-							0
+							{lengths}
 							</span>
 						</div>
 				

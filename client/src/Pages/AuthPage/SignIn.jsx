@@ -80,6 +80,12 @@ const SignIn = () => {
 						value={userInput.password}
 					/>
 				</div>
+				<div className='flex justify-end mt-2'>
+					<Link 
+						to={'/forgot-password'}
+						className='text-blue-600 hover:text-blue-700 text-shadow-amber-50 text-sm'
+					>forgot password?</Link>
+				</div>
 				<button type='submit' className='bg-blue-500 hover:bg-blue-600 font-medium w-full rounded-sm py-1 mt-4'>
 					Submit
 				</button>

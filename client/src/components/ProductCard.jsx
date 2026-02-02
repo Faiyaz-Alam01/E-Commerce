@@ -1,21 +1,19 @@
 import axiosInstance from '@/helper/axiousInstance'
+import { addWishlist } from '@/redux/slices/wishlistSlice';
 import React from 'react'
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const ProductCard = ({ product }) => {
-  console.log("Product in Card:", product);
+  
+  const navigate = useNavigate();
+  // console.log("Product in Card:", product);
+  const dispatch = useDispatch();
 
-  const addProducttoCart = async() => {
-    try {
-      const response = await axiosInstance.post('/whishlist/add',{productId: product._id});
-      if(!response.data.success){
-        console.error("Failed to add product to cart")
-      } else {
-        console.log("Product added to cart successfully")
-      }
-    } catch (error) {
-      console.error("An error adding product to cart:", error);
-    }
+  const addProductWishlist = async() => {
+     await dispatch(addWishlist(product._id));
   }
+
 
     return (
       <div className="bg-white w-60 p-4 flex flex-col shadow-md rounded-lg border hover:shadow-lg transition cursor-pointer">
@@ -41,7 +39,7 @@ const ProductCard = ({ product }) => {
           </div>
           
           <button
-            onClick={addProducttoCart} 
+            onClick={addProductWishlist} 
             className="bg-blue-600 text-white font-medium text-xs px-3 py-1 rounded-lg hover:bg-blue-700 transition"
           >
             Add to Cart
