@@ -37,7 +37,7 @@ const Topbar = () => {
 					<Link to ={'/'} className='hover:text-blue-800'>Home</Link>
 					<Link to={'/products'} className='hover:text-blue-800'>Products</Link>
 					<Link to={'/contact'} className='hover:text-blue-800'>Contact</Link>
-					{data?.isAdmin && 
+					{userInfo?.role === 'admin' && 
 						<Link to={'/admin/dashboard'} className='hover:text-blue-800'>Dashboard</Link>
 					}
 				</div>
