@@ -34,7 +34,7 @@ const productSchema = new Schema({
 		}
 	],
 	created : {
-		type : mongoose.Types.ObjectId,
+		type : mongoose.Schema.Types.ObjectId,
 		ref:"User"
 	}
 
