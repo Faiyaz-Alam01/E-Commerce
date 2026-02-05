@@ -8,12 +8,12 @@ const router = Router();
 
 router.route('/register').post(registerUser)
 
+router.route('/get-all').get(verifyJWT,isAdmin,allUser)
 router.route('/login').post(loginUser);
 router.route('/logout').post(verifyJWT,logoutUser)
-router.route('/updateProfile/:id').put(upload.single('avatar'), updateUser)
 router.route('/forgot-password').post(forgotPassword);
+router.route('/updateProfile/:id').put(upload.single('avatar'), updateUser)
 router.route('/reset-password/:token').post(resetPassword)
-router.route('/get-all').get(verifyJWT,isAdmin,allUser)
 
 
 export default router;

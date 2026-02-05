@@ -1,4 +1,5 @@
 import { Product } from "../models/product.model.js";
+import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/apiError.js";
 import { asyncHandler } from "../utils/apiHandler.js";
 import { ApiResponse } from "../utils/apiResponse.js";
@@ -154,6 +155,10 @@ export const deleteProduct = asyncHandler(async(req, res) => {
 		throw new ApiError(404, "Not Product found");
 	}
 
+	// 
+	console.log(product);
+	
+
 	await Product.findByIdAndDelete(productId)
 
 	return res
@@ -164,3 +169,46 @@ export const deleteProduct = asyncHandler(async(req, res) => {
 			"Products deleted successfully"
 		))
 })
+
+export const getFilteredProducts = asyncHandler(async(req, res) => {
+	const { search, category, brand, price } = req.query;
+	console.log("query received",req.query)
+	
+	const userId = req.user?._id;
+
+	const user = await User.findById(userId);
+	if(!user){
+		throw new ApiError(404, "User not found");
+	}
+
+	let filter = {};
+	if(search){
+		filter.title = { $regex: search, $options: "i" };
+	}
+
+	if(category){
+		filter.category = category;
+	}
+
+	if(brand){		
+		filter.brand = brand;
+	}
+
+	if(price){
+		filter.price = { $lte: Number(price) };
+	}
+
+	console.log(filter);
+	
+	
+	const products = await Product.find(filter);
+	
+	return res
+		.status(200)
+		.json(new ApiResponse(
+			200,
+			products,
+			'Fetched filtered products successfully'
+		))
+	
+});

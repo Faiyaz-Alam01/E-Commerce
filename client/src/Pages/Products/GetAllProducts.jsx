@@ -1,106 +1,87 @@
-import ProductCard from '@/Components/ProductCard'
-import { getAllProducts } from '@/redux/slices/productSlice';
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProducts, getFilteredProducts } from "@/redux/slices/productSlice";
+import { useDebounce } from "@/hooks/useDebounce";
+import FilterSidebar from "@/Components/FilterSidebar";
+import ProductCard from "@/Components/ProductCard";
 
 export const GetAllProducts = () => {
+  const dispatch = useDispatch();
 
-	const navigate = useNavigate();
-	const dispatch = useDispatch();
+  const [filterData, setFilterData] = useState({
+    search: "",
+    category: "All",
+    brand: "",
+    price: 0,
+  });
 
-	  const [price, setPrice] = useState(0);
+  // Debounced search & price
+  const debounceSearch = useDebounce(filterData.search, 500);
+  const debouncePrice = useDebounce(filterData.price, 500);
 
-	const {productData} = useSelector((state) => state.product);
-	console.log(productData);	
+  const { productData, filteredData } = useSelector((state) => state.product);
 
-	useEffect(() => {
-		 dispatch(getAllProducts());
-	}, [dispatch]);
+  useEffect(() => {
+    dispatch(getAllProducts());
+  }, [dispatch]);
 
-	const categoryData = [
-		{ id: 1, name: 'Mobile' },
-		{ id: 2, name: 'Headphones' },
-		{ id: 3, name: 'Laptop' },
-		{ id: 4, name: 'TV' }
-	];
-	
+  // Apply filters when debounced values or category/brand change
+  useEffect(() => {
+    const activeFilters = {
+      search: debounceSearch,
+      price: debouncePrice,
+      brand: filterData.brand,
+    };
 
-	return (
-		<div className='h-screen m-10 p-5 border-2 font-bold text-xl border-gray-300 rounded-lg'>
-			<h1 className='text-center p-4'>All Products Page</h1>
-			<div className='flex gap-4 h-[80%] flex-col md:flex-row'>
-				{/* Here will be displayed all functionality */}
-				<div className='bg-gray-400 max-w-56 h-auto space-y-2 p-2 py-4'>
-					<input 
-						type="text"
-						placeholder='Search Products...'
-						className='w-48 font-normal text-sm outline-none border-2 bg-white border-gray-200 rounded-sm py-1 px-2 mt-4 ml-2'
-					/>
-					{/* Category */}
-					<div className='ml-2 space-y-0.5 text-sm font-normal'>
-						<p className='font-medium text-sm'>Category</p>
-						{categoryData.map((category) => (
-							<div key={category.id} className=''>
-								<input 
-									type="radio"
-									id={category.name}
-									name="category"
-									value={category.name}
-								/>
-								<label for={category.name} className='ml-1'>{category.name}</label>
-							</div>
-						))}
-						
-					</div>
-					{/* Brand */}
-					<div className='ml-2'>
-						<label for="brand" className='text-sm'>Brand:</label>
-						<select id='brand' className='w-48 font-normal text-sm outline-none border-2 bg-white border-gray-200 rounded-sm px-2'>
-							<option value="" disabled selected>Select Brand</option>
-							<option value="samsung">Samsung</option>
-							<option value="iphone">Iphone</option>
-							<option value="oneplus">Oneplus</option>
-							<option value="hp">HP</option>
-							<option value="asus">Asus</option>
-						</select>
-					</div>
+    // Only add category if not "All"
+    if (filterData.category !== "All") {
+      activeFilters.category = filterData.category;
+    }
 
-					{/* Price Range */}
-					<div className='ml-2'>
-						<label for="price" className=' text-sm'>Price Range:</label>
-						<p className='text-xs font-normal text-gray-900'>Price Range:₹0 - ₹1000000</p>
-						<input 
-							type="range"
-							id="price"
-							name="price"
-							min="0"
-							max="100000"
-							value={price}
-							onChange={(e) => setPrice(e.target.value)}
-							className='w-48'
-						/>	
-      					<span className='ml-2 font-medium'>₹{price}</span>
-					</div>
+    // Check if any filter is active
+    const isFilterActive =
+      activeFilters.search ||
+      activeFilters.category ||
+      activeFilters.brand ||
+      activeFilters.price > 0;
 
-					<button 
-						className='text-center border bg-blue-500 text-sm px-4 w-full font-medium  py-1 hover:bg-blue-600 hover:text-white text rounded-lg'
-						type='submit'
-					>Reset Filters
-					</button>
+    if (isFilterActive) {
+      dispatch(getFilteredProducts(activeFilters));
+    }
+  }, [debounceSearch, debouncePrice, filterData.category, filterData.brand, dispatch]);
 
-				</div>
+  // Decide which products to display
+  const iSFilterActive =
+    filterData.search ||
+    (filterData.category && filterData.category !== "All") ||
+    filterData.brand ||
+    filterData.price > 0;
 
-				<div className='flex h-52 gap-4'>
-					{productData && productData.length > 0 ? (
-						productData.map((product) => (
-							<ProductCard key={product._id} product={product}/>
-						))
-					) : (
-						<p>No products available.</p>
-					)}
-				</div>
-			</div>
-		</div>
-	)
-}
+  const displayProducts = iSFilterActive ? filteredData : productData;
+
+  return (
+    <div className="h-auto m-10 p-5 border-2 font-bold text-xl border-gray-300 rounded-lg">
+      <h1 className="text-center p-4">All Products Page</h1>
+
+      <div className="flex gap-4 flex-col md:flex-row">
+        {/* Filter Sidebar */}
+        <FilterSidebar
+          filterData={filterData}
+          setFilterData={setFilterData}
+          product={productData}
+        />
+
+        {/* Products Display Section */}
+        <div className="h-auto md:h-54 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {displayProducts && displayProducts.length > 0 ? (
+            displayProducts.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))
+          ) : (
+            <p>No products available.</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};

@@ -1,36 +1,29 @@
-import React, { useState } from "react";
+import { getFilteredProducts } from "@/redux/slices/productSlice.js";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
-const FilterSidebar = ({ product }) => {
-  const uniqueCategory = [...new Set(product.map((p) => p.category))];
-  // console.log(uniqueCategory);
-  const uniqueBrand = [...new Set(product.map((p) => p.brand))];
-//   console.log(uniqueBrand);
+const FilterSidebar = ({ filterData, setFilterData, product }) => {
 
-  const [filterData, setFilterData] = useState({
-	search: "",
-	category: "",
-	brand: "",
-	price: 0
-  })
-
-  console.log(filterData);
-  
+	const uniqueCategory = ["All",...new Set(product.map((p) => p.category))];
+	// console.log(uniqueCategory);
+	const uniqueBrand = [...new Set(product.map((p) => p.brand))];
+	//   console.log(uniqueBrand);  
 
   const handleFilterChange = (e) => {
-	const { name, value } = e.target;
-	setFilterData((prev) => ({
-		...prev,
-		[name]: value
-	}));
+    const { name, value } = e.target;
+    setFilterData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
   }
 
   const resetFilters = () => {
-	setFilterData({
-		search: "",
-		category: "",
-		brand: "",
-		price: 0
-	})
+    setFilterData({
+      search: "",
+      category: "All",
+      brand: "",
+      price: 0
+    })
   }
 
   return (
@@ -58,9 +51,9 @@ const FilterSidebar = ({ product }) => {
                   type="radio"
                   id={category}
                   name="category"
-				  checked={filterData.category === category}
+				        checked={filterData.category.toLowerCase() === category.toLowerCase()}
                   value={category}
-				  onChange={handleFilterChange}
+				        onChange={handleFilterChange}
                   className="accent-blue-600 cursor-pointer"
                 />
                 <label
