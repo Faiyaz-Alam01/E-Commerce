@@ -33,7 +33,6 @@ app.use("/api/v1/users", userRoute)
 app.use("/api/v1/products", productRoute)
 app.use("/api/v1/categories", categoryRoute)
 app.use("/api/v1/wishlist", wishlistRoute)
-app.use("/api/v1/orders", orderRoute)
 
 
 app.use((err, req, res, next) => {
