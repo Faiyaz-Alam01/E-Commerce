@@ -27,7 +27,6 @@ import userRoute from './routes/user.routes.js'
 import productRoute from './routes/product.routes.js'
 import categoryRoute from './routes/category.routes.js'
 import wishlistRoute from './routes/wishlist.routes.js'
-import orderRoute from './routes/order.routes.js'
 
 app.use("/api/v1/users", userRoute)
 app.use("/api/v1/products", productRoute)
