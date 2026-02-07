@@ -14,7 +14,8 @@ const categorySchema = new Schema({
 		trim: true
 	},
 	image :{
-		type: String,
+		url: String,
+		public_Id: String,
 	}
 },{timestamps: true})
 
