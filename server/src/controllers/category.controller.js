@@ -2,9 +2,10 @@ import { Category } from "../models/category.model.js";
 import { ApiError } from "../utils/apiError.js";
 import { asyncHandler } from "../utils/apiHandler.js";
 import { ApiResponse } from "../utils/apiResponse.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 export const addcategory = asyncHandler(async(req, res) => {
-	const {name, slug} = req.body;
+	const {name, slug} = req.body;	
 
 	if(!name|| !slug){
 		throw new ApiError(400, "all fields are required");
@@ -14,9 +15,25 @@ export const addcategory = asyncHandler(async(req, res) => {
 	if(category) {
 		throw new ApiError(400, "slug should be unique");
 	}
+	
+	let categoryImage;
+	if(req.file){
+
+		const result = await uploadOnCloudinary(req.file.path);
+		if(!result){
+			throw new ApiError(500, "Failed to upload image");
+		}
+		
+		categoryImage = {
+			url: result?.secure_url,
+			public_Id: result?.public_id
+		};
+	}	
 
 	const newcategory = await Category.create({
-		name, slug
+		name,
+		slug, 
+		image: categoryImage
 	})
 
 	return res
