@@ -57,12 +57,12 @@ export const deleteWishlist = createAsyncThunk('/wishlist/delete', async(product
 	extraReducers:(builder) => {
 		builder
 			.addCase(addWishlist.fulfilled, (state, action) => {
-				console.log(action.payload);
+				// console.log(action.payload);
 				
 				state.wishlistData = action.payload.data;
 			})
 			.addCase(getAllWishlist.fulfilled,(state, action)=>{
-				console.log(action.payload);
+				// console.log(action.payload);
 
 				state.wishlistData=action.payload.data;
 			});

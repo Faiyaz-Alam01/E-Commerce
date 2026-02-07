@@ -9,7 +9,7 @@ export const Wislist = () => {
 
 	const dispatch = useDispatch();
 	const {wishlistData} = useSelector((state) => state.wishlist);
-	console.log(wishlistData);
+	// console.log(wishlistData);
 	const product = wishlistData?.products || [];
 
 	useEffect(() => {	

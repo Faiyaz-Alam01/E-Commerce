@@ -9,7 +9,7 @@ export const signUp = createAsyncThunk('/user/signup', async(userData) => {
 		toast.promise(res,{
 			loading:"Signing up...",
 			success:(res) => {
-				console.log(res);
+				// console.log(res);
 				
 				return res?.data?.message || "Signup successful 🎉"
 			},
@@ -116,7 +116,7 @@ const authSlice = createSlice({
 	extraReducers:(builder) => {
 		builder
 			.addCase(userLogin.fulfilled, (state, action) => {	
-				console.log(action?.payload);
+				// console.log(action?.payload);
 				
 				if (action.payload?.success) {
 					state.isLoggedIn = true;
@@ -132,7 +132,7 @@ const authSlice = createSlice({
 				state.data = null;
 			})
 			.addCase(updateProfile.fulfilled, (state, action) => {	
-				console.log(action.payload);
+				// console.log(action.payload);
 				
 				state.data = action.payload.data;
 			})

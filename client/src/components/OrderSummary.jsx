@@ -5,7 +5,7 @@ const OrderSummary = () => {
 	const [promo, setPromo] = useState('');
 
 	function handleApplyPromo() {
-		console.log("Apply promo code:", promo);
+		// console.log("Apply promo code:", promo);
 	};
 	return (
 		<div className='bg-gray-400 flex flex-col w-full md:h-full   p-10 space-y-2'>

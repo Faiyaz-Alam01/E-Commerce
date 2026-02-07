@@ -48,7 +48,7 @@ const SignUp = () => {
 		}
 
 		const response = await dispatch(signUp(userInput));
-		console.log(response);
+		// console.log(response);
 		if(response?.payload?.success){
 			navigate('/signin');
 			setUserInput({

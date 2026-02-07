@@ -6,7 +6,7 @@ import { ApiResponse } from "../utils/apiResponse.js";
 
 export const addWishlist = asyncHandler(async (req, res) => {
 	const { productId } = req.params;
-	console.log(productId);
+	// console.log(productId);
 	
 	const userId = req.user?._id;
 	
@@ -76,7 +76,7 @@ export const getAllWishlist = asyncHandler(async(req,res) => {
 	if(!whishlist || whishlist.products.length === 0){
 		throw  new ApiError(400, "No products in wishlist")
 	}
-	console.log(whishlist);
+	// console.log(whishlist);
 	
 
 	return res

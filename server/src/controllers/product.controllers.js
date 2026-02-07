@@ -7,7 +7,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 export const addProduct = asyncHandler(async(req,res) => {
 	const {title, description,price, category, brand} = req.body;
-	console.log(req.body);
+	// console.log(req.body);
 	
 	if([title,description,category,brand].some((field) => field?.trim()==="")){
 		throw new ApiError(400,"All fields are required");
@@ -34,7 +34,7 @@ export const addProduct = asyncHandler(async(req,res) => {
 	}
 
 	const imagesPath = req.files?.images || [];
-	console.log("imagesPath", imagesPath);
+	// console.log("imagesPath", imagesPath);
 	
 	if(imagesPath.length === 0){
 		throw new ApiError(400, "At least one image is required");
@@ -42,7 +42,7 @@ export const addProduct = asyncHandler(async(req,res) => {
 
 	const images = [];
 	for(const img of imagesPath){
-		console.log(img.path)
+		// console.log(img.path)
 		const result = await uploadOnCloudinary(img?.path);
 		if(!result){
 			throw new ApiError(500, "Failed to upload one of the images")
@@ -72,8 +72,8 @@ export const addProduct = asyncHandler(async(req,res) => {
 
 export const updateProduct = asyncHandler(async(req, res)=>{
 	const {productId} = req.params;
-	console.log(req.params);
-	console.log(req.body);
+	// console.log(req.params);
+	// console.log(req.body);
 	
 
 	if(!productId){
@@ -156,7 +156,7 @@ export const deleteProduct = asyncHandler(async(req, res) => {
 	}
 
 	// 
-	console.log(product);
+	// console.log(product);
 	
 
 	await Product.findByIdAndDelete(productId)
@@ -172,7 +172,7 @@ export const deleteProduct = asyncHandler(async(req, res) => {
 
 export const getFilteredProducts = asyncHandler(async(req, res) => {
 	const { search, category, brand, price } = req.query;
-	console.log("query received",req.query)
+	// console.log("query received",req.query)
 	
 	const userId = req.user?._id;
 
@@ -198,7 +198,7 @@ export const getFilteredProducts = asyncHandler(async(req, res) => {
 		filter.price = { $lte: Number(price) };
 	}
 
-	console.log(filter);
+	// console.log(filter);
 	
 	
 	const products = await Product.find(filter);

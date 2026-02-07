@@ -166,7 +166,7 @@ const logoutUser = asyncHandler(async(req, res) => {
 const updateUser = asyncHandler(async(req, res) => {
 	const {bio,username, email} = req.body;
 	const id = req.params.id;
-	console.log("id", id);
+	// console.log("id", id);
 	
 		
 	const user = await User.findById(id);
@@ -214,7 +214,7 @@ const updateUser = asyncHandler(async(req, res) => {
 
 const forgotPassword = asyncHandler(async(req, res) => {
 	const { email } = req.body;	
-	console.log(email);
+	// console.log(email);
 	
 
 	const userExists = await User.findOne({ email });
