@@ -33,7 +33,7 @@ function App() {
           <Route  path='profile' element={<Profile />} />
           <Route path='forgot-password' element={<ForgotPassword/>} />
           <Route path='reset-password/:token' element={<ResetPassword />} />
-          // {/* <Route path='contact' element={<Contact />} /> */}
+          <Route path='contact' element={<Contact />} />
 
           <Route path='*' element={<PageNotfound/>}/>
         </Route>
