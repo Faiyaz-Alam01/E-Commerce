@@ -43,7 +43,7 @@ const Topbar = () => {
 				</div>
 				{isLoggedIn &&
 					<div className="flex items-center gap-4">
-						<div className="cursor-pointer relative" onClick={() => naviagate('/wishlist')}>
+						<div className="cursor-pointer relative" onClick={() => naviagate('/cart')}>
 							<IoCartOutline size={24} />
 							<span className="absolute -top-1 -right-2 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
 							{lengths}

@@ -6,7 +6,7 @@ import Index from './Pages/Index'
 import SignUp from './Pages/AuthPage/SignUp'
 import SignIn from './Pages/AuthPage/SignIn'
 import { GetAllProducts } from './Pages/Products/GetAllProducts'
-import { Wislist } from './Pages/Whislist'
+import { CartPage } from './Pages/CartPage.jsx'
 import Dashboard from './Pages/Dashboard'
 import AdminPage from './Pages/AdminPage'
 import AddProducts from './Pages/Products/AddProducts'
@@ -29,7 +29,7 @@ function App() {
           <Route path='admin' element={<AdminPage/>}/>
           <Route path='delete' element={<AdminPage/>}/>
           <Route path='product/add' element={<AddProducts/>}/>
-          <Route path='wishlist' element={<Wislist/>}/>
+          <Route path='cart' element={<CartPage/>}/>
           <Route  path='profile' element={<Profile />} />
           <Route path='forgot-password' element={<ForgotPassword/>} />
           <Route path='reset-password/:token' element={<ResetPassword />} />
