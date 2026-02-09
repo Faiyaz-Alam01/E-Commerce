@@ -1,6 +1,7 @@
 import authReducer from "./slices/authSlice";
 import productReducer from "./slices/productSlice";
 import categorySlice from "./slices/categoriesSlice";
+import cartSlice from './slices/cartSlice'
 import whishlistSlice from "./slices/wishlistSlice";
 import persistReducer from 'redux-persist/es/persistReducer';
 import persistStore from 'redux-persist/es/persistStore';
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
     product: productReducer,
     category: categorySlice,
     wishlist:whishlistSlice,
+    cart:cartSlice
 });
 
 const persistConfig = {
