@@ -27,11 +27,13 @@ import userRoute from './routes/user.routes.js'
 import productRoute from './routes/product.routes.js'
 import categoryRoute from './routes/category.routes.js'
 import wishlistRoute from './routes/wishlist.routes.js'
+import cartRoute from './routes/cart.routes.js'
 
 app.use("/api/v1/users", userRoute)
 app.use("/api/v1/products", productRoute)
 app.use("/api/v1/categories", categoryRoute)
 app.use("/api/v1/wishlist", wishlistRoute)
+app.use("/api/v1/cart", cartRoute)
 
 
 app.use((err, req, res, next) => {
