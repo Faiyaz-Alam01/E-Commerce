@@ -1,23 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.png'
 import { IoCartOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from 'react-redux';
 import userPng from '../assets/user.png'
 import { userLogout } from '@/redux/slices/authSlice';
+import { getCart } from '@/redux/slices/cartSlice';
 
 
 const Topbar = () => {
 
+	const naviagate = useNavigate();
+	const dispatch = useDispatch();
+
 	const {data, isLoggedIn} = useSelector(state => state.auth);
 	const userInfo = data?.user;
 
-	const {wishlistData} = useSelector((state) => state.wishlist);
+	const cardData = useSelector((state) => state?.cart?.cart?.items);
 	  
-	const lengths = wishlistData?.products?.length || 0;
-	
-	const naviagate = useNavigate();
-	const dispatch = useDispatch();
+	const lengths = cardData?.length || 0;
 
 	const handleLogout = async () => {
 		await dispatch(userLogout());

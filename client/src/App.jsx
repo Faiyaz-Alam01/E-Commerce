@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import Layout from './layout/Layout'
@@ -17,6 +17,20 @@ import ForgotPassword from './Pages/forgotPass'
 import ResetPassword from './Pages/resetPass'
 
 function App() {
+
+  const [showSessionPopup, setShowSessionPopup] = useState(false);
+
+  useEffect(()=>{
+
+    const handleSession = () =>{
+      setShowSessionPopup(true);
+    }
+
+    window.addEventListener("sessionExpired", handleSession);
+
+    return ()=> window.removeEventListener("sessionExpired", handleSession);
+
+  },[])
 
   return (
       <Routes>

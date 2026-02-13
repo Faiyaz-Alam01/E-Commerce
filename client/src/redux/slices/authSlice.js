@@ -106,6 +106,16 @@ export const forgotPassword = createAsyncThunk('/user/forgotPassword', async({em
 	}
 });
 
+export const refreshAccessToken = createAsyncThunk('/user/accessToken', async() => {
+	try {
+		await axiosInstance.post("/users/refreshAccessToken");
+    	setShowSessionPopup(false);
+
+	} catch (error) {
+		window.location.href="/signin";
+
+	}
+})
 const authSlice = createSlice({
 	name:"auth",
 	initialState:{

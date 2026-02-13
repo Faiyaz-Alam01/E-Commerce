@@ -24,11 +24,7 @@ const couponSchema = new Schema({
 	expiryDate: {
 		type: Date,
 		required: true,
-	},
-	isActive:{
-		type: Boolean,
-		default: true
-	},
+	}
 
 },{timestamps: true})
 

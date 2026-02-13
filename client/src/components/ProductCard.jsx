@@ -1,13 +1,11 @@
 import axiosInstance from '@/helper/axiousInstance'
-import { addToCart } from '@/redux/slices/cartSlice';
+import { addToCart, getCart } from '@/redux/slices/cartSlice';
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const ProductCard = ({ product }) => {
 
-  // const navigate = useNavigate();
-  // console.log("Product in Card:", product);
   const dispatch = useDispatch();
 
   const addProductWishlist = async() => {
@@ -15,6 +13,8 @@ const ProductCard = ({ product }) => {
       productId: product._id,
       quantity: 1,
      }));
+
+     dispatch(getCart());
   }
 
 
@@ -26,6 +26,8 @@ const ProductCard = ({ product }) => {
             src={product.thumbnail} 
             className="w-full h-full object-contain" 
             alt="productImg" 
+            loading="lazy"
+
           />
         </div>
 
