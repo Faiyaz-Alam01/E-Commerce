@@ -1,3 +1,4 @@
+import axiosInstance from "@/helper/axiousInstance";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 
@@ -8,7 +9,7 @@ const initialState = {
 
 export const getAllCategories = createAsyncThunk('/categories/get', async() =>{
 	try {
-		const res = axiosInstance.get('/categories/getAll');
+		const res = axiosInstance.get('/categories/all-category');
 		toast.promise(res,{
 			loading:"Loading categories...",
 			success:"Categories loaded successfully",
@@ -18,7 +19,9 @@ export const getAllCategories = createAsyncThunk('/categories/get', async() =>{
 		return data;
 		
 	} catch (error) {
-		toast.error("Something went wrong in fetching categories");
+		// console.log(error);	
+		toast.error(error?.response?.data?.message || "Something went wrong in fetching categories");
+		throw error;
 	}
 })
 
