@@ -1,21 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 
-const cartItemSchema = new Schema({
-  product: {
-    type: Schema.Types.ObjectId,
-    ref: "Product",
-    required: true,
-  },
-  quantity: {
-    type: Number,
-    default: 1,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-});
-
 const cartSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
@@ -24,7 +8,21 @@ const cartSchema = new Schema({
     unique: true,
   },
 
-  items: [cartItemSchema],
+  items: [{
+    product: {
+      type: Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      default: 1,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+  }],
 
   totalPrice: {
     type: Number,
@@ -35,6 +33,7 @@ const cartSchema = new Schema({
     type : Number,
     default: 0
   },
+  
   finalPrice : {
     type:Number,
     default:0
