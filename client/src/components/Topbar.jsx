@@ -15,6 +15,8 @@ const Topbar = () => {
 
 	const {data, isLoggedIn} = useSelector(state => state.auth);
 	const userInfo = data?.user;
+	console.log(userInfo);
+	
 
 	const cardData = useSelector((state) => state?.cart?.cart?.items);
 	  
@@ -37,7 +39,9 @@ const Topbar = () => {
 				<div className='flex gap-3 font-medium text-md'>
 					<Link to ={'/'} className='hover:text-blue-800'>Home</Link>
 					<Link to={'/products'} className='hover:text-blue-800'>Products</Link>
-					<Link to={'/contact'} className='hover:text-blue-800'>Contact</Link>
+					{userInfo?.role === 'user' && 
+						<Link to={'/orders'} className='hover:text-blue-800'>Contact</Link>
+					}
 					{userInfo?.role === 'admin' && 
 						<Link to={'/dashboard'} className='hover:text-blue-800'>Dashboard</Link>
 					}
