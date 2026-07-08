@@ -51,7 +51,7 @@ export const createCoupon = asyncHandler(async(req, res) => {
 })
 
 export const applyCoupon = asyncHandler(async(req, res) => {
-	// console.log(req.body);
+	console.log(req.body);
 	
 	const {code} = req.body;
 	const userId = req.user._id;
@@ -71,13 +71,13 @@ export const applyCoupon = asyncHandler(async(req, res) => {
 		throw new ApiError(400, 'coupon expired')
 	}
 
-	const cart = await Cart.findOne({user: userId}).populate("items.product");
+	const cart = await Cart.findOne({user: userId}).populate("items.productId");
 	if(!cart){
 		throw new ApiError(400, 'cart not found');
 	}
 
 	const cartTotal = cart.items.reduce((acc, item) => {
-        return acc + item.product.price * item.quantity;
+        return acc + item.productId.price * item.quantity;
     }, 0);
 
 	if(cartTotal < coupon.minAmount){
@@ -105,4 +105,25 @@ export const applyCoupon = asyncHandler(async(req, res) => {
 			"Applied coupon successfully"
 		))
 	
+})
+
+export const removeCoupon = asyncHandler(async(req, res)=>{
+	const userId = req.user._id;
+
+	const cart = await Cart.findOne({user: userId}).populate("items.productId");
+	if(!cart){
+		throw new ApiError(400, 'cart not found');
+	}
+
+	cart.discount = 0;
+	cart.finalPrice = cart.totalPrice;
+	await cart.save();
+
+	return res
+		.status(200)
+		.json(new ApiResponse(
+			200,
+			{cart},
+			"Removed coupon successfully"
+		))	
 })

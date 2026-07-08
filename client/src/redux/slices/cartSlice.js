@@ -8,6 +8,8 @@ const initialState = {
 }
 
 export const addToCart = createAsyncThunk('/cart/add', async({productId, quantity}) =>  {
+	console.log(productId);
+	
 	try {
 		const res = axiosInstance.post('/cart',{productId, quantity})
 		toast.promise(res, {
@@ -20,6 +22,8 @@ export const addToCart = createAsyncThunk('/cart/add', async({productId, quantit
 
 		return (await res).data
 	} catch (error) {
+		console.log(error);
+		
 		toast.error(error?.response?.data?.message || "product added to cart failed.");
 		throw error;
 	}
@@ -63,6 +67,45 @@ export const removeItem =createAsyncThunk('/remove/item', async(productId) => {
 	}
 })
 
+export const applyCoupon = createAsyncThunk('/apply/coupon', async(code) => {
+	try {
+		const res = axiosInstance.post('/coupon/apply-coupon', {code});
+		toast.promise(res, {
+			loading: "applying coupon...",
+			success: (data) => {
+				return data?.data?.message || "coupon applied successfully"
+			},
+			error: "failed to apply coupon"
+		})
+
+		return (await res).data;
+	} catch (error) {
+		console.log(error);
+		
+		toast.error(error?.response?.data?.message || "failed to apply coupon");
+		throw error;
+	}
+});
+
+export const removeCoupon = createAsyncThunk('/remove/coupon', async() => {
+	try {
+		const res = axiosInstance.delete('/coupon/remove-coupon');
+		toast.promise(res, {
+			loading: "removing coupon...",
+			success: (data) => {
+				return data?.data?.message || "coupon removed successfully"
+			},
+			error: "failed to remove coupon"
+		})
+
+		return (await res).data;
+	} catch (error) {
+		console.log(error);
+		
+		toast.error(error?.response?.data?.message || "failed to remove coupon");
+		throw error;
+	}
+});
 const cartSlice = createSlice({
 	name:"cart",
 	initialState,
@@ -71,7 +114,16 @@ const cartSlice = createSlice({
 		builder
 			.addCase(getCart.fulfilled, (state, action) => {
 				// console.log(action.payload);
+				console.log(action.payload);
 				state.cart = action.payload.data;
+			})
+			.addCase(applyCoupon.fulfilled, (state, action) => {
+				// console.log(action?.payload?.data?.cart);				
+				state.cart = action.payload.data.cart;
+			})
+			.addCase(removeCoupon.fulfilled, (state, action) => {
+				// console.log(action?.payload?.data?.cart);				
+				state.cart = action.payload.data.cart;
 			})
 	}
 })

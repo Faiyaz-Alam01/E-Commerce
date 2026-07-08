@@ -6,8 +6,8 @@ import { useDispatch } from 'react-redux';
 import { getCart, removeItem } from '@/redux/slices/cartSlice';
 
 const WhislistCard = ({ item }) => {
-  // console.log("product", item);
-  const data = item.product;
+  console.log("product", item);
+  const data = item.productId || [];
   const dispatch = useDispatch();
   const[quantity, setQuantity] = useState(item.quantity);
 
@@ -49,7 +49,7 @@ const WhislistCard = ({ item }) => {
 
         <img 
           className="w-20 h-20 object-cover rounded-lg" 
-          src={data.thumbnail} 
+          src={data?.thumbnail} 
           alt="img" 
         />
 

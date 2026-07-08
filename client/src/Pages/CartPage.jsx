@@ -7,12 +7,9 @@ import { Link } from "react-router-dom";
 
 export const CartPage = () => {
   const dispatch = useDispatch();
-  const { items } = useSelector((state) => state?.cart?.cart) || [];
+  const {cart}  = useSelector((state) => state?.cart || []);
+  const items = cart?.items || [];
   // console.log(items);
-  
-
-  const product = items || [];
-  // console.log(product);
   
 
   useEffect(() => {
@@ -50,7 +47,7 @@ export const CartPage = () => {
 
           {/* Right Side Order Summary */}
           <div className="w-full lg:w-[350px] sticky top-10 h-fit">
-            <OrderSummary products={product} />
+            <OrderSummary cart={cart} />
           </div>
         </div>
       )}

@@ -1,9 +1,17 @@
 import React from 'react'
+import { useNavigate } from "react-router-dom";
 
 const AddProducts = () => {
+	  const Navigate = useNavigate();
+	  
 	return (
 		<div className='flex justify-center items-center'>
 			<div className='border w-full max-w-2xl p-5 rounded-md shadow-md mt-10'>
+				<div className='mb-4'>
+					<button onClick={() => Navigate(-1)} className='bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-md'>
+						Back
+					</button>
+				</div>
 				<h1 className='font-bold text-center text-2xl mt-2'>Add Product</h1>
 				<form className='flex flex-col max-w-md mx-auto gap-4 mt-5'>
 					<input 

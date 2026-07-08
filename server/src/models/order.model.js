@@ -16,11 +16,20 @@ const orderSchema = new Schema({
 		}
 	],
 	totolPrice : Number,
-	status : {
+	razorpay_order_id : {
+		type: String,
+		required:true
+	},
+	orderStatus : {
+		type: String,
+		default:"pending"
+	},
+	paymentStatus : {
 		type: String,
 		default:"pending"
 	}
-})
+},{timestamps:true}
+);
 
 const Order = mongoose.model('Order', orderSchema);
 export default Order

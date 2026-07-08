@@ -7,6 +7,8 @@ import { asyncHandler } from "../utils/apiHandler.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 
 export const addToCart = asyncHandler(async (req, res) => {
+	console.log(req.body);
+	
 
 	const { productId, quantity = 1 } = req.body;
 	const { _id: userId } = req.user;
@@ -22,43 +24,63 @@ export const addToCart = asyncHandler(async (req, res) => {
 
 	let cart = await Cart.findOne({ user: userId });
 
+	//if cart not found create new cart for user
 	if (!cart) {
 		cart = await Cart.create({
 			user: userId,
-			items: []
+			items: [{productId, quantity, price: product.price}],
+			totalPrice:product.price,
 		});
+	}else{
+		// console.log("cart.items", cart.items);
+		
+		//find ,if product is already in the cart.
+		const itemIndex = cart.items.findIndex(
+			item => item.productId?.toString() === productId
+		);
+
+		if (itemIndex > -1) {
+			//increase quantity => if prodyuct exists
+			cart.items[itemIndex].quantity += 1;
+		}else {
+			//new product -> push to cart
+			 cart.items.push({
+				productId,
+				quantity,
+				price: product.price
+			 });	
+		}
 	}
 
-	const existingItem = cart.items.find(
-		item => item.product.toString() === productId
-	);
-
-	if (existingItem) {
-		existingItem.quantity += quantity;
-	} else {
-		cart.items.push({
-			product: productId,
-			quantity,
-			price: product.price
-		});
-	}
-
+	//recalculate total price
 	cart.totalPrice = cart.items.reduce(
 		(acc, item) => acc + item.price * item.quantity,
 		0
 	);
 
+	//save updated cart
 	await cart.save();
 
-	return res.status(201).json(
-		new ApiResponse(201, { cart }, "Product added to cart")
+	//populate cart details before sending response
+	const pupulatedCart = await Cart.findById(cart._id).populate('items.productId');
+	console.log('populated data', pupulatedCart);
+	
+
+	return res
+		.status(201)
+		.json(
+			new ApiResponse(
+				201, 
+				{ cart: pupulatedCart },
+				 "Product added to cart"
+			)
 	);
 });
 
 export const getCart = asyncHandler(async(req, res) => {
 	const userId = req.user._id;
 
-	const cart = await Cart.findOne({user:userId}).populate('items.product');
+	const cart = await Cart.findOne({user:userId}).populate('items.productId');
 	if(!cart){
 		throw new ApiError(404, "Cart not found");
 	}

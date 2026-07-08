@@ -1,41 +1,73 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { MdDashboard } from "react-icons/md";
+import { TbUsers } from "react-icons/tb";
+import { FaBox, FaCartPlus, FaClipboardList } from "react-icons/fa";
 
 const Dashboard = () => {
   return (
-    <div className="flex justify-center items-center flex-col p-10 space-y-5">
-      <h1 className="text-2xl font-bold mb-10 text-center">Admin Dashboard</h1>
+      <div className=" flex">
+        {/* left side */}
+        <div className="bg-blue-100 w-80 text-lg h-screen py-8 px-6 shadow-md">  
+          <div className="space-y-3">
 
-      <div className="grid p-2 grid-cols-1 sm:grid-cols-2 gap-2 md:grid-cols-2 lg:grid-cols-2 ">
-        <Link
-          to="/products"
-          className="p-5 w-md sm:w-64 md:w-md bg-white border-2 border-gray-300 font-medium rounded-lg text-center hover:bg-blue-200 hover:border-blue-400"
-        >
-          Get All Products
-        </Link>
+            <div className="flex items-center gap-3 p-2 rounded-md hover:bg-blue-200 hover:text-blue-600 cursor-pointer transition">
+              <MdDashboard size={22} />
+              <span className="font-medium">Dashboard</span>
+            </div>
 
-        <Link
-          to="/product/add"
-          className="p-5 w-md sm:w-64 md:w-md bg-white border-2 border-gray-300 font-medium rounded-lg text-center hover:bg-green-200 hover:border-green-400"
-        >
-          Add Product
-        </Link>
+            <div className="flex items-center gap-3 p-2 rounded-md hover:bg-blue-200 hover:text-blue-600 cursor-pointer transition">
+              <FaCartPlus size={20} />
+              <Link to="admin/add" className="font-medium">
+                Add Product
+              </Link>
+            </div>
 
-        <Link
-          to="/admin"
-          className="p-5 w-md sm:w-64 md:w-md bg-white border-2 border-gray-300 font-medium rounded-lg text-center hover:bg-yellow-200 hover:border-yellow-400"
-        >
-          Update Product
-        </Link>
+            <div className="flex items-center gap-3 p-2 rounded-md hover:bg-blue-200 hover:text-blue-600 cursor-pointer transition">
+              <FaBox size={20} />
+              <Link to="products" className="font-medium">
+                Products
+              </Link>
+            </div>
 
-        <Link
-          to="/delete"
-          className="p-5 w-md sm:w-64 md:w-md bg-white border-2 border-gray-300 font-medium rounded-lg text-center hover:bg-red-200 hover:border-red-400"
-        >
-          Delete Product
-        </Link>
+            <div className="flex items-center gap-3 p-2 rounded-md hover:bg-blue-200 hover:text-blue-600 cursor-pointer transition">
+              <TbUsers size={22} />
+              <span className="font-medium">Users</span>
+            </div>
+
+            <div className="flex items-center gap-3 p-2 rounded-md hover:bg-blue-200 hover:text-blue-600 cursor-pointer transition">
+              <FaClipboardList size={20} />
+              <span className="font-medium">Orders</span>
+            </div>
+          </div>
+        </div>
+
+
+        {/* right side */}
+         <div className="flex-1">
+          <div className="flex  mt-10 justify-evenly flex-wrap gap-4 p-8">
+            <div className="bg-blue-400 text-xl p-4 w-64 h-40 rounded-md space-y-4">
+              <p className="font-bold">Total User</p>
+               <h1 className="font-bold">20</h1>
+            </div>
+
+             <div className="bg-blue-400 text-xl p-4 w-64 h-40 rounded-md space-y-4">
+              <p className="font-bold">Total Products</p>
+               <h1 className="font-bold">20</h1>
+            </div>
+
+             <div className="bg-blue-400 text-xl p-4 w-64 h-40 rounded-md space-y-4">
+              <p className="font-bold ">Total Orders</p>
+               <h1 className="font-bold">20</h1>
+            </div>
+
+             <div className="bg-blue-400 text-xl p-4 w-64 h-40 rounded-md space-y-4">
+              <p className="font-bold">Total Revenue</p>
+               <h1 className="font-bold">$2000</h1>
+            </div>
+          </div>
+         </div>
       </div>
-    </div>
   );
 };
 
