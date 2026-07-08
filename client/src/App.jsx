@@ -41,7 +41,7 @@ function App() {
           <Route index element={<Index />} />
           <Route path='signup' element={<SignUp />}/>
           <Route path='signin' element={<SignIn />}/>
-          <Route path='dashboard/products' element={<GetAllProducts />}/>
+          <Route path='products' element={<GetAllProducts />}/>
           <Route path='dashboard' element={<Dashboard/>}/>
           <Route path='admin' element={<AdminPage/>}/>
           <Route path='delete' element={<AdminPage/>}/>
